@@ -1,4 +1,15 @@
-export const TUTORIAL_STEPS = [
+interface TutorialStep {
+  title: string;
+  description: string;
+  highlight: string;
+  code?: string;
+  learnMoreLink?: {
+    url: string;
+    text: string;
+  };
+}
+
+export const TUTORIAL_STEPS: TutorialStep[] = [
   {
     title: 'DDD ドメイン駆動設計を学ぼう！',
     description: `DDDは、複雑なビジネスロジックを整理し、より理解しやすいコードを書くための設計手法です。
@@ -9,6 +20,10 @@ export const TUTORIAL_STEPS = [
 • コードの保守や機能追加が難しい
 • チーム間でビジネスの理解が異なる`,
     highlight: 'header',
+    learnMoreLink: {
+      url: 'https://martinfowler.com/bliki/DomainDrivenDesign.html',
+      text: 'DDDの基礎について詳しく学ぶ'
+    }
   },
   {
     title: 'DDDの基本的な考え方',
@@ -28,6 +43,10 @@ export const TUTORIAL_STEPS = [
 
 これらの層を明確に分けることで、コードが整理され、変更や機能追加が容易になります。`,
     highlight: 'overview',
+    learnMoreLink: {
+      url: 'https://martinfowler.com/bliki/PresentationDomainDataLayering.html',
+      text: 'レイヤードアーキテクチャについて詳しく'
+    }
   },
   {
     title: 'なぜレイヤーに分けるの？',
@@ -82,6 +101,10 @@ class Todo {
     }
   }
 }`,
+    learnMoreLink: {
+      url: 'https://www.domainlanguage.com/ddd/reference/',
+      text: 'ドメインモデリングについて詳しく'
+    }
   },
   {
     title: 'アプリケーションレイヤー - ユースケースの実現',
@@ -103,6 +126,10 @@ class TodoService {
     return todo;
   }
 }`,
+    learnMoreLink: {
+      url: 'https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/',
+      text: 'アプリケーション設計パターンについて'
+    }
   },
   {
     title: 'インフラストラクチャレイヤー - データの保存',
