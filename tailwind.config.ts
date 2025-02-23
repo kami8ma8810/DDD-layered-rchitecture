@@ -73,15 +73,15 @@ export default {
         "error": "#ef4444",          // 赤
         "info": "#3b82f6",           // 情報用の青
 
-        "--rounded-box": "1rem",
-        "--rounded-btn": "0.5rem",
-        "--rounded-badge": "1.9rem",
-        "--animation-btn": "0.25s",
-        "--animation-input": "0.2s",
+        "--rounded-box": "1.5rem",
+        "--rounded-btn": "1.5rem",
+        "--rounded-badge": "2rem",
+        "--animation-btn": "0.3s",
+        "--animation-input": "0.3s",
         "--btn-focus-scale": "0.95",
-        "--border-btn": "1px",
-        "--tab-border": "1px",
-        "--tab-radius": "0.5rem",
+        "--border-btn": "2px",
+        "--tab-border": "2px",
+        "--tab-radius": "1.5rem",
       },
     }],
   },
