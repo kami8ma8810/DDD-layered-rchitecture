@@ -3,6 +3,7 @@ import { TUTORIAL_STEPS } from '../../constants/tutorialSteps';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-typescript';
+import { Priority } from '../../domain/todo/Priority';
 
 // プレゼンテーションレイヤー
 import React, { useEffect, useState, ChangeEvent } from 'react';
@@ -14,16 +15,224 @@ interface TodoListProps {
   todoService: TodoService;
 }
 
-// 共通のスタイル定義
+// 共通のスタイル定義を更新
 const COMMON_STYLES = {
   container: "min-h-[100svh] bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 p-2 sm:p-4 md:py-20",
   innerContainer: "container mx-auto px-2 sm:px-4 md:px-8 max-w-3xl",
-  card: "card bg-white shadow-2xl border-2 border-primary/10 backdrop-blur-sm rounded-2xl md:rounded-3xl",
-  cardBody: "card-body p-4 sm:p-6 md:p-10 lg:p-14",
-  title: "text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-6 font-serif tracking-wide drop-shadow-md",
+  card: "card bg-white shadow-2xl border-2 border-primary/10 backdrop-blur-sm rounded-xl md:rounded-3xl",
+  cardBody: "card-body p-3 sm:p-6 md:p-10 lg:p-14", // パディングを調整
+  title: "text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-6 font-serif tracking-wide drop-shadow-md mt-8 sm:mt-0", // マージントップを追加
   subtitle: "badge badge-lg badge-primary badge-outline py-2 sm:py-4 px-3 sm:px-6 font-medium text-sm sm:text-base shadow-sm",
-  headerSection: "text-center mb-8 md:mb-12",
+  headerSection: "text-center mb-6 sm:mb-8 md:mb-12", // マージンを調整
 };
+
+// Todoアイテムのコンポーネントを分離
+const TodoItem: React.FC<{
+  todo: Todo;
+  onComplete: (id: string) => void;
+  onDelete: (id: string) => void;
+  onUpdateTitle: (id: string, title: string) => void;
+  onUpdatePriority: (id: string, priority: string) => void;
+}> = ({ todo, onComplete, onDelete, onUpdateTitle, onUpdatePriority }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState(todo.title);
+
+  // キーボードイベントハンドラーを更新
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (editTitle.length >= 3) {
+        onUpdateTitle(todo.id, editTitle);
+        setIsEditing(false);
+      }
+    }
+    if (e.key === 'Escape') {
+      setEditTitle(todo.title);
+      setIsEditing(false);
+    }
+  };
+
+  // TodoItemコンポーネントのスタイル定義を追加
+  const BUTTON_STYLES = {
+    base: "btn relative group px-3 h-10",
+    tooltip: "invisible group-hover:visible absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap",
+  };
+
+  return (
+    <article className="bg-white border border-gray-200 rounded-xl shadow-sm hover:border-gray-300 transition-all duration-200">
+      <div className="p-3 sm:p-6"> {/* パディングを調整 */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+          <div className="flex items-center gap-2 sm:gap-4 flex-1">
+            {isEditing ? (
+              <div className="w-full flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      className="input input-bordered w-full h-10 text-base px-3"
+                      autoFocus
+                      name="todo-title"
+                      onKeyDown={handleKeyDown}
+                      placeholder="Todoのタイトルを入力"
+                    />
+                    <div className="text-xs text-gray-500 mt-1 px-1">
+                      {editTitle.length}/50文字 (3文字以上)
+                    </div>
+                  </div>
+                  <div className="flex gap-2 flex-shrink-0">
+                    <button
+                      onClick={() => {
+                        setEditTitle(todo.title);
+                        setIsEditing(false);
+                      }}
+                      className="btn btn-sm bg-gray-100 hover:bg-gray-200 text-gray-700 min-w-[4rem]"
+                      type="button"
+                    >
+                      キャンセル
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (editTitle.length >= 3) {
+                          onUpdateTitle(todo.id, editTitle);
+                          setIsEditing(false);
+                        }
+                      }}
+                      className={`btn btn-sm min-w-[4rem] ${
+                        editTitle.length >= 3 
+                          ? 'bg-blue-500 hover:bg-blue-600 text-white' 
+                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      }`}
+                      disabled={editTitle.length < 3}
+                      type="button"
+                    >
+                      保存
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div 
+                  role="status"
+                  className={`
+                    px-2 py-1 sm:px-3 sm:py-1.5 rounded-md text-sm font-medium whitespace-nowrap
+                    ${todo.completed 
+                      ? 'bg-green-50 text-green-700 border border-green-200' 
+                      : 'bg-blue-50 text-blue-700 border border-blue-200'}
+                  `}
+                >
+                  {todo.completed ? '完了' : '未完了'}
+                </div>
+                <h3 className={`
+                  text-sm sm:text-base font-medium flex-1 break-all
+                  ${todo.completed ? 'line-through text-gray-400' : 'text-gray-700'}
+                `}>
+                  {todo.title}
+                </h3>
+              </>
+            )}
+          </div>
+          
+          {/* ボタングループをスマホでは下に配置 */}
+          {!isEditing && (
+            <div role="toolbar" className="flex items-center gap-2 sm:gap-3 self-end sm:self-auto">
+              {!todo.completed && (
+                <>
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className={`${BUTTON_STYLES.base} text-gray-600 hover:bg-gray-100 hover:text-gray-900`}
+                    type="button"
+                  >
+                    <span className={BUTTON_STYLES.tooltip}>編集</span>
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => onComplete(todo.id)}
+                    className={`${BUTTON_STYLES.base} bg-green-50 hover:bg-green-100 text-green-600 hover:text-green-700 border border-green-200`}
+                    type="button"
+                  >
+                    <span className={BUTTON_STYLES.tooltip}>完了</span>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </button>
+                </>
+              )}
+              <button
+                onClick={() => {
+                  if (window.confirm('このTodoを削除してもよろしいですか？')) {
+                    onDelete(todo.id);
+                  }
+                }}
+                className={`${BUTTON_STYLES.base} bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 border border-red-200`}
+                type="button"
+              >
+                <span className={BUTTON_STYLES.tooltip}>削除</span>
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
+        
+        {/* 優先度と更新日時を2行に分ける（スマホ） */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-3 pt-3 border-t border-gray-100">
+          <div className="flex items-center gap-2">
+            <label htmlFor={`priority-${todo.id}`} className="text-sm text-gray-600">優先度:</label>
+            <select
+              id={`priority-${todo.id}`}
+              value={todo.priority.toString()}
+              onChange={(e) => onUpdatePriority(todo.id, e.target.value)}
+              className="select select-bordered select-sm h-8 min-h-[2rem] text-sm"
+              disabled={todo.completed}
+              name="priority"
+            >
+              <option value="low">低</option>
+              <option value="medium">中</option>
+              <option value="high">高</option>
+            </select>
+          </div>
+          <time 
+            dateTime={todo.updatedAt.toISOString()}
+            className="text-xs sm:text-sm text-gray-500"
+          >
+            最終更新: {formatDate(todo.updatedAt)}
+          </time>
+        </div>
+      </div>
+    </article>
+  );
+};
+
+// 日付フォーマット用のヘルパー関数
+const formatDate = (date: Date): string => {
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+  const minutes = Math.floor(diff / (1000 * 60));
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  if (minutes < 1) return '今';
+  if (minutes < 60) return `${minutes}分前`;
+  if (hours < 24) return `${hours}時間前`;
+  if (days < 7) return `${days}日前`;
+
+  return date.toLocaleDateString('ja-JP', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+
+// TodoListコンポーネントのソート関連の型と状態を更新
+type SortType = 'priority' | 'createdAt' | 'updatedAt';
 
 export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -41,6 +250,7 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
   } = useTutorial();
   const step = TUTORIAL_STEPS[currentStep];
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  const [sortBy, setSortBy] = useState<SortType>('updatedAt');
 
   useEffect(() => {
     loadTodos();
@@ -65,7 +275,7 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
 
   const handleCreateTodo = async () => {
     try {
-      await todoService.createTodo(newTodoTitle);
+      await todoService.createTodo(newTodoTitle, 'medium');
       setNewTodoTitle('');
       await loadTodos();
       setDddTip('ドメインレイヤー: Todoエンティティが作成され、バリデーションが実行されました');
@@ -86,6 +296,65 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
     } catch (error) {
       console.error('Todo完了エラー:', error);
     }
+  };
+
+  const handleDeleteTodo = async (id: string) => {
+    try {
+      await todoService.deleteTodo(id);
+      await loadTodos();
+      setDddTip('ドメインレイヤー: Todoが削除されました');
+    } catch (error) {
+      console.error('Todo削除エラー:', error);
+    }
+  };
+
+  const handleUpdateTitle = async (id: string, newTitle: string) => {
+    try {
+      await todoService.updateTodoTitle(id, newTitle);
+      await loadTodos();
+      setDddTip('ドメインレイヤー: Todoのタイトルが更新されました');
+    } catch (error) {
+      console.error('Todoタイトル更新エラー:', error);
+    }
+  };
+
+  const handleUpdatePriority = async (id: string, priority: string) => {
+    try {
+      await todoService.updateTodoPriority(id, priority);
+      await loadTodos();
+      setDddTip('ドメインレイヤー: Todoの優先度が更新されました');
+    } catch (error) {
+      console.error('Todo優先度更新エラー:', error);
+    }
+  };
+
+  // ソート関数を更新
+  const sortTodos = (todos: Todo[]) => {
+    const priorityOrder = { high: 0, medium: 1, low: 2 };
+    return [...todos].sort((a, b) => {
+      switch (sortBy) {
+        case 'priority':
+          return priorityOrder[a.priority.toString() as keyof typeof priorityOrder] 
+            - priorityOrder[b.priority.toString() as keyof typeof priorityOrder];
+        case 'createdAt':
+          return b.createdAt.getTime() - a.createdAt.getTime();
+        case 'updatedAt':
+          return b.updatedAt.getTime() - a.updatedAt.getTime();
+        default:
+          return 0;
+      }
+    });
+  };
+
+  const groupByPriority = (todos: Todo[]) => {
+    return todos.reduce((groups, todo) => {
+      const priority = todo.priority.toString();
+      if (!groups[priority]) {
+        groups[priority] = [];
+      }
+      groups[priority].push(todo);
+      return groups;
+    }, {} as Record<string, Todo[]>);
   };
 
   if (isActive) {
@@ -234,10 +503,10 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
       <div className={COMMON_STYLES.innerContainer}>
         <div className={COMMON_STYLES.card}>
           <div className={COMMON_STYLES.cardBody}>
-            <div className="absolute top-4 right-4">
+            <div className="mb-8 sm:mb-0 sm:absolute sm:top-4 sm:right-4">
               <button
                 onClick={activateMode}
-                className="btn btn-link text-blue-500 hover:text-blue-600 normal-case text-base"
+                className="btn btn-link text-blue-500 hover:text-blue-600 normal-case text-sm sm:text-base"
                 title="チュートリアルを見る"
               >
                 チュートリアルを見る
@@ -273,17 +542,21 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
                     />
                   </div>
                   <button 
-                    className="btn bg-blue-500 hover:bg-blue-600 text-white border-0 
-                      rounded-xl shadow-lg hover:shadow-blue-200/50
-                      transform hover:-translate-y-0.5 transition-all duration-300
-                      h-12 sm:h-14 px-6 sm:px-8"
+                    className={`btn border-0 rounded-xl shadow-lg h-12 sm:h-14 px-6 sm:px-8
+                      ${newTodoTitle.length >= 3 
+                        ? 'bg-blue-500 hover:bg-blue-600 text-white hover:shadow-blue-200/50 transform hover:-translate-y-0.5' 
+                        : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
                     onClick={handleCreateTodo}
+                    disabled={newTodoTitle.length < 3}
+                    title={newTodoTitle.length < 3 ? '3文字以上入力してください' : '新しいTodoを追加'}
                   >
                     <span className="font-bold">追加</span>
                   </button>
                 </div>
-                <div className="absolute -bottom-6 left-4 text-sm text-blue-500/70">
-                  3文字以上で入力してください
+                <div className={`absolute -bottom-6 left-4 text-sm transition-colors duration-200
+                  ${newTodoTitle.length < 3 ? 'text-red-500/70' : 'text-blue-500/70'}`}
+                >
+                  3文字以上で入力してください {newTodoTitle.length > 0 && `(現在${newTodoTitle.length}文字)`}
                 </div>
               </div>
             </div>
@@ -306,51 +579,55 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
               </div>
             )}
 
-            <div className="space-y-4 sm:space-y-6">
-              {todos.map((todo) => (
-                <div 
-                  key={todo.id} 
-                  className="bg-white border-2 border-gray-100 hover:border-gray-200 rounded-xl
-                    transition-all duration-300 transform hover:-translate-y-1 shadow-md hover:shadow-lg"
-                >
-                  <div className="p-4 sm:p-6 flex justify-between items-center gap-4">
-                    <div className="flex items-center gap-3 sm:gap-4">
-                      <div className={`
-                        px-3 sm:px-4 py-2 rounded-lg font-medium text-sm sm:text-base
-                        ${todo.completed 
-                          ? 'bg-green-50 text-green-700 border border-green-200' 
-                          : 'bg-blue-50 text-blue-700 border border-blue-200'}
-                      `}>
-                        {todo.completed ? '完了' : '未完了'}
-                      </div>
-                      <span className={`
-                        text-base sm:text-lg font-medium
-                        ${todo.completed 
-                          ? 'line-through text-gray-400' 
-                          : 'text-gray-700'}
-                      `}>
-                        {todo.title}
-                      </span>
-                    </div>
-                    <button
-                      className={`
-                        min-w-[2.5rem] sm:min-w-[3rem] h-10 sm:h-12 rounded-lg shadow-sm
-                        ${todo.completed 
-                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-                          : 'bg-green-500 hover:bg-green-600 text-white transform hover:-translate-y-0.5'}
-                        transition-all duration-300
-                      `}
-                      onClick={() => handleCompleteTodo(todo.id)}
-                      disabled={todo.completed}
-                    >
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </button>
-                  </div>
+            <section aria-labelledby="todo-list-heading" className="space-y-8">
+              <div className="flex items-center justify-between">
+                <h2 id="todo-list-heading" className="text-lg font-medium text-gray-700">
+                  Todoリスト
+                </h2>
+                <div className="flex items-center gap-2">
+                  <label htmlFor="sort-select">並び順:</label>
+                  <select
+                    id="sort-select"
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as SortType)}
+                    className="select select-bordered select-sm"
+                    name="sort"
+                  >
+                    <option value="updatedAt">更新日時順</option>
+                    <option value="createdAt">作成日時順</option>
+                    <option value="priority">優先度順</option>
+                  </select>
                 </div>
-              ))}
-            </div>
+              </div>
+
+              <div className="space-y-8">
+                {Object.entries(groupByPriority(sortTodos(todos))).map(([priority, groupTodos]) => (
+                  <section key={priority} className="space-y-4">
+                    <h3 className={`
+                      px-4 py-2 rounded-lg text-sm font-medium inline-block mb-4
+                      ${priority === 'high' ? 'bg-red-50 text-red-700 border border-red-200' :
+                        priority === 'medium' ? 'bg-yellow-50 text-yellow-700 border border-yellow-200' :
+                        'bg-green-50 text-green-700 border border-green-200'}
+                    `}>
+                      優先度: {priority === 'high' ? '高' : priority === 'medium' ? '中' : '低'}
+                      <span className="ml-2 text-xs">({groupTodos.length})</span>
+                    </h3>
+                    <div role="list" className="space-y-4">
+                      {groupTodos.map(todo => (
+                        <TodoItem
+                          key={todo.id}
+                          todo={todo}
+                          onComplete={handleCompleteTodo}
+                          onDelete={handleDeleteTodo}
+                          onUpdateTitle={handleUpdateTitle}
+                          onUpdatePriority={handleUpdatePriority}
+                        />
+                      ))}
+                    </div>
+                  </section>
+                ))}
+              </div>
+            </section>
 
             {todos.length === 0 && (
               <div className="text-center py-20 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
