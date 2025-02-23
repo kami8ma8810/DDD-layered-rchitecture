@@ -6,6 +6,7 @@
     }
   ],
   "buildCommand": "npm run build",
-  "installCommand": "npm install --force",
-  "framework": "vite"
+  "installCommand": "npm install --legacy-peer-deps",
+  "framework": "vite",
+  "ignoreCommand": "bun -v"
 } 
