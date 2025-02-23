@@ -56,4 +56,36 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* コードブロックのカスタムスタイル */
+.language-typescript {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+
+/* コメントの色を調整 */
+.token.comment {
+  color: #6A9955 !important;
+}
+
+/* 文字列の色を調整 */
+.token.string {
+  color: #CE9178 !important;
+}
+
+/* キーワードの色を調整 */
+.token.keyword {
+  color: #569CD6 !important;
+}
+
+/* 関数名の色を調整 */
+.token.function {
+  color: #DCDCAA !important;
+}
+
+/* 変数名の色を調整 */
+.token.variable {
+  color: #9CDCFE !important;
 } 

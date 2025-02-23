@@ -1,5 +1,8 @@
 // 既存のimportに追加
 import { TUTORIAL_STEPS } from '../../constants/tutorialSteps';
+import Prism from 'prismjs';
+import 'prismjs/themes/prism-tomorrow.css';
+import 'prismjs/components/prism-typescript';
 
 // プレゼンテーションレイヤー
 import React, { useEffect, useState, ChangeEvent } from 'react';
@@ -49,6 +52,12 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
     }
   }, [currentStep]);
 
+  useEffect(() => {
+    if (step.code) {
+      Prism.highlightAll();
+    }
+  }, [step.code]);
+
   const loadTodos = async () => {
     const loadedTodos = await todoService.getAllTodos();
     setTodos(loadedTodos);
@@ -96,14 +105,32 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
                 </div>
 
                 {step.code && (
-                  <div className="bg-gray-900 rounded-xl p-4 sm:p-6 mb-8 md:mb-12 overflow-x-auto">
-                    <div className="flex items-center justify-between text-gray-400 text-sm mb-3 md:mb-4">
-                      <span className="font-medium">TypeScript</span>
-                      <span className="text-xs">DDDの実装例</span>
+                  <div className="bg-[#1E1E1E] rounded-xl overflow-hidden mb-8 md:mb-12">
+                    <div className="flex items-center justify-between px-4 py-2 bg-[#2D2D2D] border-b border-gray-700">
+                      <div className="flex items-center gap-2">
+                        <div className="flex gap-1.5">
+                          <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
+                          <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
+                          <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
+                        </div>
+                        <span className="text-gray-400 text-sm ml-2">TypeScript</span>
+                      </div>
+                      <span className="text-xs text-gray-500">DDDの実装例</span>
                     </div>
-                    <pre className="text-gray-300 font-mono text-sm md:text-base whitespace-pre-wrap break-words text-left">
-                      {step.code}
-                    </pre>
+                    <div className="p-4 sm:p-6 overflow-x-auto">
+                      <pre className="!bg-transparent !m-0 !p-0">
+                        <code
+                          className="language-typescript"
+                          dangerouslySetInnerHTML={{
+                            __html: Prism.highlight(
+                              step.code.trim(),
+                              Prism.languages.typescript,
+                              'typescript'
+                            ),
+                          }}
+                        />
+                      </pre>
+                    </div>
                   </div>
                 )}
               </div>
