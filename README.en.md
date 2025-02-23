@@ -1,6 +1,6 @@
 # DDD Learning Todo App 📝
 
-[日本語](./README.md) | English
+[日本語](./README.md) ｜English
 
 ## Overview 🎯
 
