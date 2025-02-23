@@ -1,6 +1,6 @@
 # DDD学習用Todoアプリ 📝
 
-日本語 ｜ [English](./README.en.md) 
+日本語｜[English](./README.en.md) 
 
 ## 概要 🎯
 
