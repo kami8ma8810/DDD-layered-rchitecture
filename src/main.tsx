@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { TodoList } from './presentation/components/TodoList';
 import { TodoService } from './application/todo/TodoService';
 import { InMemoryTodoRepository } from './infrastructure/todo/InMemoryTodoRepository';
+import './index.css';
 
 // アプリケーションの初期化
 const todoRepository = new InMemoryTodoRepository();
