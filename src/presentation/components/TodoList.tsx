@@ -1,15 +1,14 @@
 // 既存のimportに追加
-import { TUTORIAL_STEPS } from '../../constants/tutorialSteps';
+import { TUTORIAL_STEPS } from '@constants/tutorialSteps';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-typescript';
-import { Priority } from '../../domain/todo/Priority';
 
 // プレゼンテーションレイヤー
 import React, { useEffect, useState, ChangeEvent } from 'react';
-import { Todo } from '../../domain/todo/Todo';
-import { TodoService } from '../../application/todo/TodoService';
-import { useTutorial } from '../../contexts/TutorialContext';
+import { Todo } from '@domain/todo/Todo';
+import { TodoService } from '@application/todo/TodoService';
+import { useTutorial } from '@contexts/TutorialContext';
 
 interface TodoListProps {
   todoService: TodoService;

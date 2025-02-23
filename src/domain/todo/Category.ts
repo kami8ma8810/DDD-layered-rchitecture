@@ -1,3 +1,5 @@
+import { Todo } from './Todo';
+
 // 集約ルートの例
 export class Category {
   private constructor(
@@ -5,7 +7,7 @@ export class Category {
     private _name: string,
     private _todos: Todo[] = []
   ) {
-    this.validateName(name);
+    this.validateName(_name);
   }
 
   private validateName(name: string): void {

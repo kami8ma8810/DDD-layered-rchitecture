@@ -1,8 +1,8 @@
 // アプリケーションサービス
-import { Todo } from '../../domain/todo/Todo';
-import { TodoRepository } from '../../domain/todo/TodoRepository';
-import { CategoryRepository } from '../../domain/todo/CategoryRepository';
-import { Priority } from '../../domain/todo/Priority';
+import { Todo } from '@domain/todo/Todo';
+import { TodoRepository } from '@domain/todo/TodoRepository';
+import { CategoryRepository } from '@domain/todo/CategoryRepository';
+import { Priority } from '@domain/todo/Priority';
 import { v4 as uuidv4 } from 'uuid';
 
 export class TodoService {
