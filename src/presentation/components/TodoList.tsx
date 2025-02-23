@@ -123,22 +123,22 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
                     />
                   ))}
                 </div>
-                <div className="flex items-center gap-3 md:gap-4 order-1 sm:order-2 w-full sm:w-auto">
+                <div className="flex items-center gap-3 md:gap-4 order-1 sm:order-2">
                   <button
                     onClick={deactivateMode}
-                    className="btn btn-ghost text-gray-500 hover:text-gray-600 text-sm min-w-[100px] sm:min-w-[120px]"
+                    className="btn btn-ghost text-gray-500 hover:text-gray-600 text-sm w-[100px] sm:w-[120px]"
                   >
                     スキップする
                   </button>
-                  <div className="flex gap-2 min-w-[100px] sm:min-w-[120px]">
+                  <div className="flex gap-2 w-[200px] sm:w-[240px] justify-end">
                     {currentStep > 0 ? (
                       <button
                         onClick={() => setCurrentStep(prev => prev - 1)}
                         className="btn bg-white hover:bg-gray-50 text-blue-500 hover:text-blue-600 border-2 border-blue-200 
                           rounded-xl shadow-sm hover:shadow-md
                           transform hover:-translate-y-0.5 transition-all duration-300
-                          h-12 sm:h-14 px-6 sm:px-8 flex-1
-                          flex items-center gap-2"
+                          h-12 sm:h-14 w-[100px] sm:w-[120px]
+                          flex items-center justify-center gap-2"
                       >
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -154,8 +154,8 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
                         className="btn bg-blue-500 hover:bg-blue-600 text-white border-0 
                           rounded-xl shadow-lg hover:shadow-blue-200/50
                           transform hover:-translate-y-0.5 transition-all duration-300
-                          h-12 sm:h-14 px-6 sm:px-8 flex-1
-                          flex items-center gap-2"
+                          h-12 sm:h-14 w-[100px] sm:w-[120px]
+                          flex items-center justify-center gap-2"
                       >
                         次へ
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -168,8 +168,8 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
                         className="btn bg-blue-500 hover:bg-blue-600 text-white border-0 
                           rounded-xl shadow-lg hover:shadow-blue-200/50
                           transform hover:-translate-y-0.5 transition-all duration-300
-                          h-12 sm:h-14 px-6 sm:px-8 flex-1
-                          flex items-center gap-2"
+                          h-12 sm:h-14 w-[100px] sm:w-[120px]
+                          flex items-center justify-center gap-2"
                       >
                         始める
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
