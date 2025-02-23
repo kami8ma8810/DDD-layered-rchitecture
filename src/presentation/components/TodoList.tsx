@@ -20,7 +20,7 @@ const COMMON_STYLES = {
   innerContainer: "container mx-auto px-2 sm:px-4 md:px-8 max-w-3xl",
   card: "card bg-white shadow-2xl border-2 border-primary/10 backdrop-blur-sm rounded-xl md:rounded-3xl",
   cardBody: "card-body p-3 sm:p-6 md:p-10 lg:p-14", // パディングを調整
-  title: "text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-6 font-serif tracking-wide drop-shadow-md mt-8 sm:mt-0", // マージントップを追加
+  title: "text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-3 sm:mb-6 tracking-wide drop-shadow-md mt-8 sm:mt-0", // マージントップを追加
   subtitle: "badge badge-lg badge-primary badge-outline py-2 sm:py-4 px-3 sm:px-6 font-medium text-sm sm:text-base shadow-sm",
   headerSection: "text-center mb-6 sm:mb-8 md:mb-12", // マージンを調整
 };
