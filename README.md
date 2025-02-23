@@ -43,15 +43,8 @@ src/
 
 ## 関連リンク 🔗
 
-- [ソースコード](https://github.com/kami8ma8810/ddd-layered-rchitecture)
-- [開発者ブログ](https://kami8ma8810.vercel.app/)
 - [DDDリファレンス](https://www.domainlanguage.com/ddd/)
 
 ## ライセンス 📄
 
 [MIT](./LICENSE)
-
-## 作者 👤
-
-- Twitter: [@kami8ma8810](https://twitter.com/kami8ma8810)
-- GitHub: [@kami8ma8810](https://github.com/kami8ma8810)
