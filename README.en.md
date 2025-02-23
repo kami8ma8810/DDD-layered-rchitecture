@@ -43,7 +43,10 @@ src/
 
 ## Related Links 🔗
 
-- [DDD Reference](https://www.domainlanguage.com/ddd/)
+- [Domain-Driven Design Reference](https://www.domainlanguage.com/ddd/) - Official reference by Eric Evans
+- [DDD Quickly](https://www.infoq.com/minibooks/domain-driven-design-quickly/) - DDD introduction guide
+- [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) - Clean Architecture explained by Robert C. Martin
+- [Strategic DDD](https://www.youtube.com/watch?v=_zWxeHEfOh4) - Strategic DDD explained by Vaughn Vernon
 
 ## License 📄
 

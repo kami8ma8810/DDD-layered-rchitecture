@@ -43,7 +43,8 @@ src/
 
 ## 関連リンク 🔗
 
-- [DDDリファレンス](https://www.domainlanguage.com/ddd/)
+- [Domain-Driven Design Reference](https://www.domainlanguage.com/ddd/) - Eric Evans氏による公式リファレンス
+- [DDD Quickly](https://www.infoq.com/minibooks/domain-driven-design-quickly/) - DDDの入門書
 
 ## ライセンス 📄
 
