@@ -4,6 +4,7 @@ import { TodoList } from './presentation/components/TodoList';
 import { TodoService } from './application/todo/TodoService';
 import { InMemoryTodoRepository } from './infrastructure/todo/InMemoryTodoRepository';
 import './index.css';
+import { TutorialProvider } from './contexts/TutorialContext';
 
 // アプリケーションの初期化
 const todoRepository = new InMemoryTodoRepository();
@@ -14,7 +15,9 @@ if (container) {
   const root = createRoot(container);
   root.render(
     <React.StrictMode>
-      <TodoList todoService={todoService} />
+      <TutorialProvider>
+        <TodoList todoService={todoService} />
+      </TutorialProvider>
     </React.StrictMode>
   );
 } 
