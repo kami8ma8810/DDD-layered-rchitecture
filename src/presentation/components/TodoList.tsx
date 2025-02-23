@@ -47,30 +47,30 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
   };
 
   return (
-    <div className="min-h-screen bg-base-200 py-16 bg-gradient-to-b from-primary/10 to-secondary/10">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 py-16">
       <div className="container mx-auto px-6 max-w-3xl">
-        <div className="card bg-base-100 shadow-2xl border-2 border-primary/20">
+        <div className="card bg-white shadow-2xl border-2 border-primary/10 backdrop-blur-sm">
           <div className="card-body p-8 md:p-12">
             <div className="text-center mb-12">
-              <h1 className="text-5xl font-bold text-primary mb-6 font-serif tracking-wide">
+              <h1 className="text-5xl font-bold text-primary mb-6 font-serif tracking-wide drop-shadow-md">
                 DDD学習用Todoアプリ
               </h1>
-              <div className="badge badge-primary badge-outline p-4 font-medium text-base">
+              <div className="badge badge-primary badge-outline p-4 font-medium text-base shadow-sm">
                 ドメイン駆動設計の概念を実践的に学ぶためのアプリケーション
               </div>
             </div>
 
             <div className="form-control w-full mb-12">
-              <div className="join w-full shadow-lg">
+              <div className="join w-full shadow-xl">
                 <input
                   type="text"
                   value={newTodoTitle}
                   onChange={handleInputChange}
                   placeholder="新しいTodoを入力してみましょう！"
-                  className="input input-bordered input-lg join-item w-full bg-base-100 border-2 focus:border-primary px-6"
+                  className="input input-bordered input-lg join-item w-full bg-white border-2 focus:border-primary px-6 shadow-inner"
                 />
                 <button 
-                  className="btn btn-primary btn-lg join-item hover:btn-secondary transition-colors duration-300 px-8"
+                  className="btn btn-primary btn-lg join-item hover:bg-secondary transition-all duration-300 px-8 min-w-[120px]"
                   onClick={handleCreateTodo}
                 >
                   <span className="font-bold text-lg">追加</span>
@@ -79,9 +79,9 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
             </div>
 
             {dddTip && (
-              <div className="alert bg-primary/10 border-2 border-primary mb-12 shadow-lg p-6">
+              <div className="alert bg-gradient-to-r from-blue-500/10 to-blue-600/10 border-2 border-primary mb-12 shadow-lg p-6">
                 <div className="flex items-center gap-6">
-                  <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                  <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 shadow-inner">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="w-8 h-8 stroke-primary">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -98,15 +98,16 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
               {todos.map((todo) => (
                 <div 
                   key={todo.id} 
-                  className="card bg-base-200 hover:bg-base-300 transition-all duration-300 transform hover:-translate-y-1 border border-base-300"
+                  className="card bg-gradient-to-r from-blue-50 to-blue-100/50 hover:from-blue-100 hover:to-blue-200/50 
+                    transition-all duration-300 transform hover:-translate-y-1 border border-blue-200 shadow-md"
                 >
                   <div className="card-body py-6 px-8 flex-row justify-between items-center">
                     <div className="flex items-center gap-6">
                       <div className={`
-                        badge badge-lg p-4 font-medium text-base
+                        badge badge-lg p-4 font-medium text-base shadow-sm
                         ${todo.completed 
-                          ? 'badge-success text-success-content' 
-                          : 'badge-secondary text-secondary-content'}
+                          ? 'bg-green-100 text-green-800 border-green-200' 
+                          : 'bg-blue-100 text-blue-800 border-blue-200'}
                       `}>
                         {todo.completed ? '完了' : '未完了'}
                       </div>
@@ -121,10 +122,10 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
                     </div>
                     <button
                       className={`
-                        btn btn-circle btn-lg
+                        btn btn-circle btn-lg shadow-lg
                         ${todo.completed 
                           ? 'btn-disabled bg-base-300' 
-                          : 'btn-success hover:btn-primary'}
+                          : 'btn-primary hover:btn-secondary'}
                         transition-all duration-300
                       `}
                       onClick={() => handleCompleteTodo(todo.id)}
@@ -138,10 +139,11 @@ export const TodoList: React.FC<TodoListProps> = ({ todoService }) => {
             </div>
 
             {todos.length === 0 && (
-              <div className="text-center py-16 bg-base-200 rounded-box border-2 border-dashed border-base-300">
+              <div className="text-center py-16 bg-gradient-to-r from-blue-50 to-blue-100/50 rounded-box 
+                border-2 border-dashed border-blue-200 shadow-inner">
                 <div className="text-6xl mb-6">📝</div>
                 <p className="text-2xl font-medium text-primary mb-3">まだTodoがありません</p>
-                <p className="text-base-content/60 text-lg">新しいTodoを追加してみましょう！</p>
+                <p className="text-blue-600/60 text-lg">新しいTodoを追加してみましょう！</p>
               </div>
             )}
           </div>
