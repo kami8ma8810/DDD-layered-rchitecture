@@ -8,7 +8,7 @@ This is a Todo application designed to help learn Domain-Driven Design (DDD) con
 
 ## Demo 🚀
 
-[Live Demo](https://ddd-todo-app.vercel.app/)
+[Live Demo](https://ddd-layered-rchitecture.vercel.app/)
 
 ## Features ✨
 

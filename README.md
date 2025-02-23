@@ -8,7 +8,7 @@
 
 ## デモ 🚀
 
-[Live Demo](https://ddd-todo-app.vercel.app/)
+[Live Demo](https://ddd-layered-rchitecture.vercel.app/)
 
 ## 特徴 ✨
 
