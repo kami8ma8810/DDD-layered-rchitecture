@@ -27,3 +27,31 @@ This is a Todo application designed to help learn Domain-Driven Design (DDD) con
 - Vite
 
 ## Architecture 🏗️ 
+
+```
+src/
+├── domain/        # Domain layer: Core business logic
+│   ├── todo/      # Todo domain
+│   └── shared/    # Shared domain logic
+├── application/   # Application layer: Use cases
+│   └── todo/      # Todo use cases
+├── infrastructure/# Infrastructure layer: External implementations
+│   └── todo/      # Todo persistence
+└── presentation/  # Presentation layer: UI
+    └── components/# UI components
+```
+
+## Related Links 🔗
+
+- [Source Code](https://github.com/kami8ma8810/ddd-layered-rchitecture)
+- [Developer Blog](https://kami8ma8810.vercel.app/)
+- [DDD Reference](https://www.domainlanguage.com/ddd/)
+
+## License ��
+
+[MIT](./LICENSE)
+
+## Author 👤
+
+- Twitter: [@kami8ma8810](https://twitter.com/kami8ma8810)
+- GitHub: [@kami8ma8810](https://github.com/kami8ma8810)
