@@ -60,33 +60,4 @@ export default {
     },
   },
   plugins: [require("daisyui")],
-  daisyui: {
-    themes: [{
-      mytheme: {
-        "primary": "#2563eb",        // メインの青
-        "primary-content": "#ffffff",
-        "secondary": "#0ea5e9",      // 明るい青
-        "secondary-content": "#ffffff",
-        "accent": "#3b82f6",         // アクセントの青
-        "neutral": "#1e293b",        // ダークグレー
-        "base-100": "#ffffff",
-        "base-200": "#f1f5f9",
-        "base-300": "#e2e8f0",
-        "success": "#10b981",        // 緑
-        "warning": "#f59e0b",        // オレンジ
-        "error": "#ef4444",          // 赤
-        "info": "#3b82f6",           // 情報用の青
-
-        "--rounded-box": "1.5rem",
-        "--rounded-btn": "1.5rem",
-        "--rounded-badge": "2rem",
-        "--animation-btn": "0.3s",
-        "--animation-input": "0.3s",
-        "--btn-focus-scale": "0.95",
-        "--border-btn": "2px",
-        "--tab-border": "2px",
-        "--tab-radius": "1.5rem",
-      },
-    }],
-  },
 } satisfies Config; 
